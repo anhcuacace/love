@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => window.location.assign("/")}
+                onClick={() => window.location.assign(import.meta.env.BASE_URL)}
               >
                 Về trang chủ
               </Button>
@@ -63,4 +63,3 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     );
   }
 }
-
