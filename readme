@@ -1,0 +1,639 @@
+# TÀI LIỆU ĐẶC TẢ CHỨC NĂNG WEBSITE KỶ NIỆM TÌNH YÊU
+
+## 1. Giới thiệu chung
+
+### 1.1. Mục đích
+
+Website được xây dựng nhằm lưu giữ và trình bày những kỷ niệm đẹp giữa chủ sở hữu và người yêu, trong đó nhấn mạnh việc tôn vinh người yêu thông qua hình ảnh, câu chuyện, thư từ và các tương tác nhỏ dễ thương. Tài liệu này mô tả chi tiết các chức năng của website để phục vụ cho việc thiết kế, phát triển và kiểm thử.
+
+### 1.2. Đối tượng sử dụng
+
+* Chính chủ (người phát triển website) và người yêu.
+* Bạn bè, người thân có link truy cập (nếu muốn chia sẻ).
+
+### 1.3. Phạm vi
+
+* Website tĩnh (không có backend riêng), hoạt động trên GitHub Pages.
+* Toàn bộ logic xử lý ở phía client (Front-end) bằng HTML/CSS/JS hoặc framework (React, v.v.).
+* Dữ liệu nội dung (hình ảnh, text) được lưu dưới dạng file tĩnh (JSON, ảnh, nhạc, v.v.) và một phần cấu hình trên trình duyệt (localStorage).
+
+---
+
+## 2. Tổng quan kiến trúc & module chức năng
+
+Website được chia thành các nhóm chức năng chính:
+
+1. Trang chủ (Home / Hero)
+2. Bảng scrapbook (Scrapbook Board)
+3. Hành trình tình yêu (Our Story – Timeline)
+4. Album người yêu (Her Gallery)
+5. Album chung (Our Gallery)
+6. Bản đồ kỷ niệm (Memories Map)
+7. Thư & nhật ký (Love Letters & Diary)
+8. Mini games (trò chơi nhỏ)
+9. Cài đặt (Settings: Theme, Ngôn ngữ, Nhạc)
+10. Điều hướng & hiệu ứng chung (Navigation & Global UI)
+
+Mỗi nhóm chức năng sẽ được mô tả chi tiết ở các mục sau.
+
+---
+
+## 2.1. Phong cách giao diện (Polaroid Scrapbook)
+
+Mục tiêu: tạo cảm giác “album kỷ niệm” đúng nghĩa — ảnh như polaroid, chữ như viết tay, sticker và giấy note xen kẽ.
+
+* **Tổng thể**: nền giấy + họa tiết nhẹ (kẻ dòng/ô), bóng đổ paper, các khối nội dung có viền “mực”.
+* **Ảnh**: hiển thị kiểu **Polaroid** (khung trắng, xoay nhẹ, caption chữ viết tay, có thể dán “tape”).
+* **Layout**: ưu tiên kiểu **collage/masonry** (cột không đều) để tạo cảm giác ảnh được “xếp vào album” tự nhiên.
+* **Sticker/Chip**: dùng cho tag, category, filter (màu pastel, bo tròn, chữ in hoa).
+* **Sticky note**: dùng cho các ghi chú nhỏ/quote/TODO (góc gấp, dán tape).
+* **Typography**: tiêu đề rõ ràng (serif), caption/ghi chú ưu tiên font chữ viết tay để tăng cảm giác scrapbook.
+* **Theme**: mặc định dùng theme **Scrapbook**, vẫn giữ các theme khác (Light/Dark/Romantic) để chuyển vibe nhanh.
+* **Micro-details**: torn paper edge (xé giấy), highlight như bút dạ quang, và shadow kiểu giấy để tạo chiều sâu.
+
+### 2.1.1. UI building blocks (gợi ý triển khai)
+
+* **Polaroid**: card ảnh có khung trắng, xoay nhẹ, caption chữ viết tay, có thể dán tape.
+* **Sticker**: chip/tag/filter màu pastel (bo tròn, uppercase, shadow nhẹ).
+* **Sticky note**: giấy note có góc gấp + tape, dùng cho quote/nhắc nhở/ghi chú.
+* **Torn paper**: hiệu ứng “xé giấy” ở mép dưới các panel filter/section để giống scrapbook hơn.
+
+---
+
+## 2.2. Bảng scrapbook (Scrapbook Board)
+
+Mục tiêu: một “bàn làm album” nơi người dùng kéo thả polaroid, note và sticker để tạo bố cục theo cảm xúc.
+
+### 2.2.1. Luồng chính
+
+* Vào `/board`: hiển thị layout mẫu (polaroid/note/sticker).
+* Kéo thả để di chuyển item, click/chạm để mở modal chỉnh sửa.
+* Thêm note/sticker nhanh (button), chỉnh nội dung, xoay nhẹ, đưa lên trên, hoặc xoá.
+* Tự lưu vào localStorage để lần sau mở lại vẫn giữ bố cục.
+
+### 2.2.2. Gợi ý mở rộng (bổ sung content sau)
+
+* Export/Import layout (JSON) hoặc xuất ảnh (png) để “đóng gói” một trang scrapbook.
+* Thêm template trang: “Kỷ niệm chuyến đi”, “Sinh nhật”, “Lời hứa”, v.v.
+* Thêm sticker/brush/tape nhiều variant hơn (washi tape, stamp, highlight).
+
+---
+
+## 3. Trang chủ (Home / Hero)
+
+### 3.1. Mục tiêu chức năng
+
+* Giới thiệu tổng quan website.
+* Tạo ấn tượng đầu tiên đẹp, lãng mạn, nhấn mạnh người yêu là nhân vật chính.
+* Dẫn hướng người dùng đến các phần nội dung chính.
+
+### 3.2. Thành phần chính
+
+* **Ảnh hoặc video nền** (background):
+
+  * Có thể là ảnh hoặc video gradient/bokeh nhẹ.
+  * Có hiệu ứng mờ (blur) hoặc overlay màu nhẹ để nổi bật nội dung.
+
+* **Ảnh người yêu**:
+
+  * Ảnh chân dung hoặc ảnh đẹp nhất của người yêu.
+  * Hiển thị dạng thẻ (card) hoặc khung bo tròn, có bóng đổ.
+
+* **Tiêu đề & tagline**:
+
+  * Tiêu đề chính: tên website hoặc tên người yêu.
+  * Tagline: câu ngắn thể hiện tình cảm (ví dụ: "Tất cả những khoảnh khắc này là dành cho em").
+  * Có thể kèm hiệu ứng gõ chữ (typing effect).
+
+* **Nút hành động (CTA buttons)**:
+
+  * Nút 1: "Hành trình của chúng ta" → scroll đến phần Timeline.
+  * Nút 2: "Chỉ riêng em" → chuyển đến Her Gallery.
+
+### 3.3. Chức năng và hành vi
+
+* Khi nhập trang web lần đầu:
+
+  * Có thể hiển thị màn “intro/loading” ngắn (2–3 giây) với dòng chữ như "Đang mở album kỷ niệm…" rồi fade sang trang chủ.
+
+* Khi nhấn nút CTA:
+
+  * Trang tự cuộn mượt (smooth scroll) đến section tương ứng.
+
+* Khi rê chuột (hover) lên ảnh/nút:
+
+  * Ảnh phóng to nhẹ, đổi shadow.
+  * Nút đổi màu nền/gradient, scale nhẹ.
+
+* Responsive:
+
+  * Trên mobile: các thành phần xếp dọc, ảnh thu nhỏ phù hợp.
+  * Trên desktop: bố cục có thể chia cột (ảnh một bên, text một bên).
+
+---
+
+## 4. Hành trình tình yêu (Our Story – Timeline)
+
+### 4.1. Mục tiêu chức năng
+
+* Trình bày các mốc kỷ niệm quan trọng dưới dạng timeline trực quan.
+* Cho phép xem chi tiết từng mốc với hình ảnh và mô tả.
+* Hỗ trợ lọc (filter) theo loại kỷ niệm.
+
+### 4.2. Dữ liệu & cấu trúc
+
+* Mỗi mốc timeline gồm:
+
+  * ID mốc.
+  * Ngày diễn ra.
+  * Tiêu đề mốc (ví dụ: "Lần đầu gặp nhau").
+  * Loại kỷ niệm (category): chuyến đi, sinh nhật, lễ kỷ niệm, khoảnh khắc dễ thương…
+  * Mô tả ngắn.
+  * Danh sách ảnh liên quan (1–n tấm).
+  * Ghi chú riêng (optional).
+
+* Dữ liệu có thể lưu trong file `timeline.json`.
+
+### 4.3. Giao diện & tương tác
+
+* **Hiển thị timeline**:
+
+  * Dạng dọc: các mốc xếp theo thứ tự thời gian từ cũ đến mới (hoặc ngược lại).
+  * Trên desktop: có thể xen kẽ trái/phải để tạo cảm giác nhịp nhàng.
+
+* **Thẻ mốc (Timeline item)** hiển thị:
+
+  * Ngày + tiêu đề mốc.
+  * Ảnh preview nhỏ (thumbnail) hoặc icon đại diện.
+  * Một đoạn mô tả ngắn (tóm tắt).
+  * Nút "Xem thêm".
+
+* **Filter timeline**:
+
+  * Thanh filter cho phép chọn:
+
+    * Tất cả
+    * Chuyến đi
+    * Sinh nhật
+    * Kỷ niệm đặc biệt
+    * Khoảnh khắc hài hước/dễ thương
+  * Khi đổi filter, các mốc timeline được cập nhật (ẩn/hiện) tương ứng.
+
+* **Xem chi tiết mốc**:
+
+  * Khi nhấn "Xem thêm" hoặc click vào thẻ mốc:
+
+    * Mở modal hoặc trang overlay hiển thị chi tiết:
+
+      * Toàn bộ mô tả dài.
+      * Toàn bộ ảnh (dưới dạng slideshow hoặc grid).
+      * Ghi chú riêng.
+  * Có nút đóng modal, điều hướng mốc trước/sau.
+
+### 4.4. Hiệu ứng
+
+* Mỗi mốc xuất hiện với hiệu ứng trượt vào (slide-in + fade-in) khi scroll đến.
+* Hover mốc: đổi màu nền, nổi bật khung.
+* Transition mượt khi lọc các mốc (ẩn/hiện với animation).
+
+---
+
+## 5. Album người yêu (Her Gallery)
+
+### 5.1. Mục tiêu chức năng
+
+* Là khu vực tôn vinh người yêu, hiển thị các ảnh đẹp nhất của cô ấy.
+* Cho phép phân loại ảnh theo tâm trạng, outfit, hoạt động.
+* Cung cấp nơi lưu giữ ghi chú/cảm xúc về từng bức ảnh.
+
+### 5.2. Dữ liệu & cấu trúc
+
+* Mỗi ảnh bao gồm:
+
+  * ID ảnh.
+  * Đường dẫn file ảnh.
+  * Tiêu đề hoặc caption ngắn.
+  * Tag/loại ảnh (cute, serious, selfie, outfit, v.v.).
+  * Ngày chụp (nếu có).
+* Danh sách ảnh lưu trong `herGallery.json`.
+
+### 5.3. Giao diện & chức năng
+
+* **Phần giới thiệu**:
+
+  * Ảnh chân dung lớn của người yêu.
+  * Tên/nickname.
+  * Danh sách các “fun facts” (sở thích, món ăn yêu thích, thói quen dễ thương…).
+
+* **Gallery dạng lưới (masonry)**:
+
+  * Ảnh được sắp xếp theo lưới không đều (masonry) để tạo sự sinh động.
+  * Có thanh filter theo tag (multi-select hoặc single-select):
+
+    * Tất cả
+    * Cute
+    * Selfie
+    * Outfit
+    * v.v.
+
+* **Lightbox xem ảnh**:
+
+  * Khi click vào một ảnh:
+
+    * Mở lightbox full-screen.
+    * Hiển thị ảnh ở kích thước lớn.
+    * Có nút next/prev để chuyển ảnh.
+    * Hỗ trợ điều khiển bằng phím mũi tên (trên desktop).
+
+* **Chức năng "Yêu thích" (Favorite)**:
+
+  * Người dùng có thể đánh dấu 1 ảnh là "yêu thích".
+  * Các ảnh yêu thích được lưu cục bộ bằng localStorage.
+  * Có filter riêng “Yêu thích” để xem nhanh.
+
+* **Ghi chú cho ảnh**:
+
+  * Trong lightbox có khu vực "Ghi chú của anh về tấm này":
+
+    * Một ô textarea để nhập nội dung.
+    * Nút "Lưu" → lưu nội dung vào localStorage theo ID ảnh.
+  * Khi mở lại ảnh, ghi chú đã lưu sẽ được hiển thị.
+
+* **Random photo**:
+
+  * Nút “Ảnh bất kỳ của em”:
+
+    * Chọn ngẫu nhiên một ảnh trong Her Gallery.
+    * Tự động mở lightbox với animation.
+
+### 5.4. Hiệu ứng
+
+* Hover ảnh: zoom nhẹ + overlay gradient + icon "Xem".
+* Lightbox: hiệu ứng phóng to/thu nhỏ (scale) khi mở/đóng.
+
+---
+
+## 6. Album chung (Our Gallery)
+
+### 6.1. Mục tiêu chức năng
+
+* Lưu trữ và trình bày ảnh chụp chung của hai người, đặc biệt là theo từng album/chuyến đi.
+
+### 6.2. Dữ liệu & cấu trúc
+
+* **Album**:
+
+  * ID album.
+  * Tên album (ví dụ: "Đà Lạt 2023").
+  * Mô tả ngắn.
+  * Ngày hoặc khoảng thời gian.
+  * Ảnh bìa album.
+
+* **Ảnh trong album**:
+
+  * ID ảnh.
+  * Đường dẫn file.
+  * Caption.
+  * Thứ tự hiển thị.
+
+### 6.3. Giao diện & chức năng
+
+* **Danh sách album**:
+
+  * Hiển thị các album dạng card:
+
+    * Ảnh bìa.
+    * Tên album.
+    * Số lượng ảnh.
+    * Ngày.
+  * Click card album → truy cập vào nội dung album.
+
+* **Nội dung album**:
+
+  * Hiển thị ảnh dạng slideshow (carousel) hoặc lưới.
+  * Nút "Play Slideshow":
+
+    * Tự động chạy từng ảnh, có thể set thời gian giữa các ảnh (3–5 giây).
+  * Nút "Pause", "Next", "Prev".
+  * Nút "Shuffle":
+
+    * Xáo trộn thứ tự ảnh trong album.
+
+* **Thông tin album**:
+
+  * Ở đầu trang album có block giới thiệu ngắn (cảm nghĩ về chuyến đi, kỷ niệm chung...).
+
+---
+
+## 7. Bản đồ kỷ niệm (Memories Map)
+
+### 7.1. Mục tiêu chức năng
+
+* Trực quan hóa những nơi hai bạn từng đến cùng nhau thông qua bản đồ.
+
+### 7.2. Dữ liệu & cấu trúc
+
+* Mỗi địa điểm kỷ niệm gồm:
+
+  * ID địa điểm.
+  * Tên địa điểm.
+  * Tọa độ (nếu dùng map thực) hoặc vị trí tương đối trên hình map.
+  * Ngày ghé thăm.
+  * Mô tả ngắn.
+  * 1–2 ảnh đại diện.
+
+### 7.3. Giao diện & chức năng
+
+* **Hiển thị bản đồ**:
+
+  * Có thể sử dụng:
+
+    * Embed Google Maps/OpenStreetMap **hoặc**
+    * Một ảnh bản đồ tĩnh, đặt các marker bằng CSS.
+
+* **Markers kỷ niệm**:
+
+  * Mỗi địa điểm hiển thị thành 1 marker/icon trên bản đồ.
+  * Hover/click marker → hiện popup nhỏ:
+
+    * Tên địa điểm.
+    * Ảnh mini.
+
+* **Danh sách kỷ niệm bên cạnh**:
+
+  * Bảng/list các địa điểm:
+
+    * Tên địa điểm.
+    * Ngày.
+  * Click một địa điểm trong list:
+
+    * Tự động focus/scroll đến marker tương ứng trên bản đồ.
+    * Mở popup chi tiết.
+
+---
+
+## 8. Thư & nhật ký (Love Letters & Diary)
+
+### 8.1. Mục tiêu chức năng
+
+* Lưu giữ các lá thư và đoạn nhật ký mà bạn viết cho người yêu.
+
+### 8.2. Dữ liệu & cấu trúc
+
+* **Thư (Letters)**:
+
+  * ID thư.
+  * Tiêu đề.
+  * Ngày viết.
+  * Nội dung thư (dạng text dài).
+  * Mood (vui, nhớ, biết ơn, xin lỗi, v.v.).
+
+* **Nhật ký (Diary entries)**:
+
+  * ID entry.
+  * Ngày.
+  * Tiêu đề/summary.
+  * Nội dung.
+
+* **Quotes/Love notes**:
+
+  * Danh sách câu trích, câu nói ngắn dễ thương.
+
+### 8.3. Giao diện & chức năng
+
+* **Danh sách thư**:
+
+  * Hiển thị card mỗi lá thư:
+
+    * Tiêu đề.
+    * Ngày.
+    * Mood (icon biểu cảm).
+  * Có filter theo mood.
+  * Click card → mở view chi tiết thư.
+
+* **Xem thư chi tiết**:
+
+  * Giao diện giống tờ giấy/thiệp.
+  * Nội dung text hiển thị dễ đọc, có thể có hiệu ứng gõ chữ.
+  * Nút điều hướng đến thư trước/sau.
+
+* **Nhật ký**:
+
+  * Hiển thị danh sách theo thời gian.
+  * Có filter theo năm/tháng.
+
+* **Generator câu yêu thương**:
+
+  * Nút "Gửi em một lời yêu ngẫu nhiên":
+
+    * Hiển thị một câu trích/love note random.
+    * Có animation (fade-in/typing).
+
+---
+
+## 9. Mini games
+
+### 9.1. Mục tiêu chức năng
+
+* Tăng tính tương tác và thú vị cho website.
+* Tạo cơ hội để "chơi" với hình ảnh và kỷ niệm.
+
+### 9.2. Game 1 – Memory Card (ảnh người yêu)
+
+**Mô tả:**
+
+* Trò chơi lật cặp bài, mỗi lá bài là 1 ảnh (hoặc 1 phần ảnh) của người yêu.
+
+**Chức năng:**
+
+* Khởi tạo một bộ bài gồm các cặp giống nhau.
+* Người chơi click để lật từng lá (hiện ảnh mặt trước).
+* Nếu 2 lá liên tiếp giống nhau → giữ mở.
+* Nếu khác nhau → lật lại sau một khoảng thời gian ngắn.
+* Tính số bước và thời gian hoàn thành.
+* Hiển thị kết quả: số bước, thời gian, lời khen ngợi.
+
+### 9.3. Game 2 – Quiz "Bạn hiểu cô ấy đến đâu?"
+
+**Mô tả:**
+
+* Bộ câu hỏi trắc nghiệm về sở thích, thói quen của người yêu.
+
+**Chức năng:**
+
+* Hiển thị tuần tự từng câu hỏi:
+
+  * Câu hỏi + 3–4 đáp án.
+* Người chơi chọn 1 đáp án.
+* Sau khi hoàn thành tất cả câu hỏi:
+
+  * Tính điểm tổng.
+  * Hiển thị tỷ lệ % hiểu người yêu.
+  * Hiển thị một đoạn mô tả/nhận xét vui.
+
+### 9.4. Game 3 – Photo Puzzle
+
+**Mô tả:**
+
+* 1 ảnh chung của hai bạn được chia thành lưới (3x3, 4x4), các mảnh bị xáo trộn.
+
+**Chức năng:**
+
+* Chia nhỏ ảnh thành nhiều ô (mỗi ô là 1 phần ảnh).
+* Xáo trộn vị trí các ô.
+* Người chơi kéo/thả hoặc click hoán đổi vị trí để ghép lại đúng.
+* Kiểm tra điều kiện hoàn thành → hiện thông báo chúc mừng.
+
+---
+
+## 10. Cài đặt (Settings: Theme, Ngôn ngữ, Nhạc)
+
+### 10.1. Mục tiêu chức năng
+
+* Cho phép cá nhân hóa giao diện và trải nghiệm website.
+
+### 10.2. Theme
+
+* Các chế độ giao diện:
+
+  * Light mode.
+  * Dark mode.
+  * Romantic mode (tông hồng, nhiều hiệu ứng bokeh).
+
+**Chức năng:**
+
+* Người dùng chọn theme trong phần Settings hoặc qua nút nhanh trên navbar.
+* Lựa chọn theme được lưu bằng localStorage.
+* Theme áp dụng cho toàn bộ site (thông qua CSS variables hoặc class root).
+
+### 10.3. Ngôn ngữ
+
+* Hỗ trợ: tiếng Việt và tiếng Anh (có thể mở rộng sau).
+
+**Chức năng:**
+
+* Toggle ngôn ngữ (switch Việt/Anh).
+* Toàn bộ text trên site lấy từ file ngôn ngữ (JSON) theo key.
+* Lựa chọn ngôn ngữ lưu trong localStorage.
+
+### 10.4. Music Player
+
+**Mục tiêu:**
+
+* Phát nhạc nền lãng mạn khi duyệt website.
+
+**Chức năng:**
+
+* Có thanh điều khiển nhạc (Player):
+
+  * Nút Play/Pause.
+  * Nút Next/Prev bài.
+  * Thanh chỉnh volume.
+  * Thông tin bài hát (tên, nghệ sĩ).
+* Danh sách bài hát được cấu hình sẵn (file nhạc kèm repo hoặc link online).
+* Tuỳ chọn "Tự động phát nhạc khi vào web" (Auto-play nếu trình duyệt cho phép):
+
+  * Lưu cấu hình trong localStorage.
+
+---
+
+## 11. Điều hướng & hiệu ứng chung
+
+### 11.1. Navbar & Navigation
+
+* Navbar cố định (fixed) ở trên cùng (desktop) hoặc dạng hamburger/bottom nav (mobile).
+* Các mục menu:
+
+  * Home
+  * Board
+  * Our Story
+  * Her Gallery
+  * Our Gallery
+  * Map
+  * Letters
+  * Games
+  * Settings
+* Click vào từng mục → chuyển route, scroll-to-top, mobile menu tự đóng.
+* Có trang `NotFound (404)` để tránh “đi lạc” khi nhập sai đường dẫn.
+
+### 11.2. Scroll & Animation
+
+* Sử dụng hiệu ứng khi scroll để:
+
+  * Các section lần lượt fade-in/slide-in.
+  * Tạo parallax nhẹ cho background ở một số block.
+
+### 11.3. Loader/Intro Screen
+
+* Khi lần đầu truy cập:
+
+  * Hiển thị màn hình intro với text ngắn.
+  * Có thanh progress/animation đơn giản.
+
+---
+
+## 12. Responsive & trải nghiệm đa thiết bị
+
+### 12.1. Yêu cầu chung
+
+* Website phải hiển thị tốt trên:
+
+  * Màn hình điện thoại (chiều ngang nhỏ ~ 360–480px).
+  * Tablet.
+  * Laptop/Desktop màn hình lớn.
+
+### 12.2. Nguyên tắc bố cục
+
+* Mobile-first: thiết kế và kiểm thử trên mobile trước.
+* Sử dụng grid/flex để thích ứng:
+
+  * Timeline theo 1 cột trên mobile, 2 cột xen kẽ trên desktop.
+  * Gallery 2 cột trên mobile, 3–5 cột trên desktop.
+  * Map và danh sách kỷ niệm xếp dọc trên mobile, song song 2 cột trên desktop.
+
+### 12.3. Kiểm soát modal & lightbox
+
+* Modal/lightbox phải:
+
+  * Full-screen trên mobile.
+  * Không bị tràn ra khỏi màn hình.
+  * Không cho scroll nền (background) khi mở.
+
+---
+
+## 13. Lưu trữ dữ liệu cục bộ (LocalStorage)
+
+Website không có backend nên một số dữ liệu cá nhân hoá sẽ lưu ở localStorage:
+
+* Theme hiện tại.
+* Ngôn ngữ hiện tại.
+* Layout bảng scrapbook (polaroid/note/sticker).
+* Các ảnh được đánh dấu "yêu thích".
+* Ghi chú cho từng ảnh trong Her Gallery.
+* Cấu hình Player (volume, auto-play, bài hát gần nhất).
+* Tuỳ chọn/tiến độ một số mini games (nếu cần).
+
+---
+
+## 14. Phi chức năng (NFR)
+
+### 14.1. Hiệu năng
+
+* Tối ưu kích thước ảnh (dùng ảnh đã nén, WebP nếu có).
+* Lazy-load ảnh trong gallery/timeline để tăng tốc độ tải.
+
+### 14.2. Trải nghiệm người dùng
+
+* Giao diện dễ hiểu, nút bấm lớn đủ cho mobile.
+* Tập trung vào tính cảm xúc, không quá phức tạp về thao tác.
+
+### 14.3. Bảo mật & riêng tư
+
+* Website chủ yếu là nội dung cá nhân, không thu thập dữ liệu người dùng khác.
+* Không yêu cầu đăng nhập.
+
+---
+
+## 15. Kết luận
+
+Tài liệu này mô tả chi tiết các module chức năng của website kỷ niệm tình yêu, bao gồm các trang chính, luồng tương tác, nhu cầu lưu trữ dữ liệu ở frontend và các yêu cầu về UI/UX, responsive. Dựa trên tài liệu này, lập trình viên có thể bắt đầu thiết kế kiến trúc code (component, data JSON, hooks, store) và triển khai từng phần một cách có hệ thống, sau đó build và deploy lên GitHub Pages.

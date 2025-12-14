@@ -1,0 +1,26 @@
+[
+  {
+    "id": "place-1",
+    "name": "Quán cà phê Góc Nhỏ",
+    "city": "Hà Nội",
+    "date": "2022-01-14",
+    "note": "Nơi chúng ta hẹn hò lần thứ 3, ly cacao nóng và chiếc ghế gỗ cạnh cửa sổ.",
+    "image": "/images/places/cafe.jpg"
+  },
+  {
+    "id": "place-2",
+    "name": "Hồ Xuân Hương",
+    "city": "Đà Lạt",
+    "date": "2023-06-02",
+    "note": "Đi bộ quanh hồ, trời se lạnh và gió mang mùi thông.",
+    "image": "/images/places/lake.jpg"
+  },
+  {
+    "id": "place-3",
+    "name": "Bãi biển An Yên",
+    "city": "Phú Yên",
+    "date": "2024-08-20",
+    "note": "Chơi đùa với sóng, viết tên em lên cát rồi chụp ảnh lại.",
+    "image": "/images/places/beach.jpg"
+  }
+]

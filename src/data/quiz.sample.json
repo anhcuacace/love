@@ -1,0 +1,21 @@
+[
+  {
+    "id": "quiz-1",
+    "question": "Món ăn nào luôn làm em vui nhất?",
+    "options": ["Bánh ngọt", "Mì cay", "Trà sữa", "Tất cả (vì có anh)"],
+    "answerIndex": 3,
+    "note": "Bạn có thể sửa câu hỏi/đáp án trong file JSON này."
+  },
+  {
+    "id": "quiz-2",
+    "question": "Một buổi hẹn lý tưởng của tụi mình là gì?",
+    "options": ["Đi dạo và nói chuyện", "Cafe + chụp ảnh", "Xem phim", "Ở nhà nghe nhạc"],
+    "answerIndex": 1
+  },
+  {
+    "id": "quiz-3",
+    "question": "Tụi mình hay lưu kỷ niệm bằng cách nào nhất?",
+    "options": ["Ảnh polaroid", "Viết thư", "Đi chơi thật nhiều", "Tất cả đều đúng"],
+    "answerIndex": 3
+  }
+]

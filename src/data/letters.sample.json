@@ -1,0 +1,23 @@
+[
+  {
+    "id": "letter-1",
+    "title": "Gửi em một buổi tối",
+    "date": "2024-01-05",
+    "mood": "nhớ",
+    "content": "Anh nhớ đôi mắt em khi nhìn lên bầu trời đêm. Cảm ơn em đã ở đây, để mỗi ngày anh được viết thêm một đoạn của câu chuyện chúng ta."
+  },
+  {
+    "id": "letter-2",
+    "title": "Lời cảm ơn nhỏ",
+    "date": "2024-05-12",
+    "mood": "biết ơn",
+    "content": "Cảm ơn em đã luôn lắng nghe, đã cho anh một nơi an toàn để kể hết mọi điều. Anh muốn mỗi trang thư này đều nhẹ nhàng như nụ cười của em."
+  },
+  {
+    "id": "letter-3",
+    "title": "Dành cho ngày mưa",
+    "date": "2024-09-21",
+    "mood": "yêu",
+    "content": "Nếu có một điều anh thích ở những ngày mưa, đó là được cùng em cuộn tròn, nghe nhạc và kể những chuyện không đầu không cuối."
+  }
+]

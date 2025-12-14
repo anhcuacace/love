@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Playfair+Display:wght@600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-surface: 245 235 217;
+  --color-paper: 255 252 245;
+  --color-foreground: 35 24 20;
+  --color-muted: 94 74 62;
+  --color-accent: 226 98 121;
+  --color-line: 35 24 20;
+  --color-accent-soft: rgb(var(--color-accent) / 0.18);
+  --page-bg:
+    radial-gradient(circle at 12% 8%, rgb(226 98 121 / 0.10), transparent 35%),
+    radial-gradient(circle at 92% 18%, rgb(250 204 21 / 0.08), transparent 38%),
+    radial-gradient(circle at 72% 88%, rgb(34 197 94 / 0.06), transparent 40%),
+    repeating-linear-gradient(0deg, rgb(35 24 20 / 0.04) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgb(35 24 20 / 0.02) 0 1px, transparent 1px 42px);
+}
+
+.theme-light {
+  --color-surface: 248 250 252;
+  --color-paper: 255 255 255;
+  --color-foreground: 15 23 42;
+  --color-muted: 71 85 105;
+  --color-accent: 236 72 153;
+  --color-line: 15 23 42;
+  --color-accent-soft: rgb(var(--color-accent) / 0.12);
+  --page-bg:
+    radial-gradient(circle at 12% 8%, rgb(236 72 153 / 0.08), transparent 35%),
+    radial-gradient(circle at 92% 18%, rgb(59 130 246 / 0.07), transparent 40%),
+    repeating-linear-gradient(0deg, rgb(15 23 42 / 0.04) 0 1px, transparent 1px 30px);
+}
+
+.theme-dark {
+  --color-surface: 11 18 33;
+  --color-paper: 17 24 39;
+  --color-foreground: 226 232 240;
+  --color-muted: 148 163 184;
+  --color-accent: 192 132 252;
+  --color-line: 226 232 240;
+  --color-accent-soft: rgb(var(--color-accent) / 0.18);
+  --page-bg:
+    radial-gradient(circle at 20% 20%, rgb(255 209 220 / 0.10), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgb(192 132 252 / 0.10), transparent 30%),
+    radial-gradient(circle at 75% 75%, rgb(34 197 94 / 0.06), transparent 40%);
+}
+
+.theme-romantic {
+  --color-surface: 15 23 42;
+  --color-paper: 17 24 39;
+  --color-foreground: 253 242 248;
+  --color-muted: 248 199 220;
+  --color-accent: 244 114 182;
+  --color-line: 253 242 248;
+  --color-accent-soft: rgb(var(--color-accent) / 0.25);
+  --page-bg:
+    radial-gradient(circle at 10% 10%, rgb(244 114 182 / 0.22), transparent 34%),
+    radial-gradient(circle at 80% 0%, rgb(94 234 212 / 0.14), transparent 35%),
+    radial-gradient(circle at 60% 80%, rgb(192 132 252 / 0.12), transparent 38%);
+}
+
+.theme-scrapbook {
+  --color-surface: 245 235 217;
+  --color-paper: 255 252 245;
+  --color-foreground: 35 24 20;
+  --color-muted: 94 74 62;
+  --color-accent: 226 98 121;
+  --color-line: 35 24 20;
+  --color-accent-soft: rgb(var(--color-accent) / 0.18);
+  --page-bg:
+    radial-gradient(circle at 12% 8%, rgb(226 98 121 / 0.10), transparent 35%),
+    radial-gradient(circle at 92% 18%, rgb(250 204 21 / 0.08), transparent 38%),
+    radial-gradient(circle at 72% 88%, rgb(34 197 94 / 0.06), transparent 40%),
+    repeating-linear-gradient(0deg, rgb(35 24 20 / 0.04) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgb(35 24 20 / 0.02) 0 1px, transparent 1px 42px);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-surface text-foreground font-body antialiased;
+  background-image: var(--page-bg);
+  background-attachment: fixed;
+  background-size: auto;
+  min-height: 100vh;
+}
+
+@layer base {
+  h1, h2, h3, h4 {
+    @apply font-display text-foreground;
+  }
+
+  ::selection {
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-surface));
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-12 md:py-16;
+  }
+
+  .container-responsive {
+    @apply max-w-6xl mx-auto px-4 md:px-6;
+  }
+
+  .glass-card {
+    @apply bg-paper border border-line/15 shadow-paper;
+  }
+
+  .torn-bottom {
+    background-image:
+      radial-gradient(circle at 14px 18px, rgb(var(--color-surface) / 0.95) 0 8px, transparent 9px),
+      radial-gradient(circle at 34px 12px, rgb(var(--color-surface) / 0.92) 0 6px, transparent 7px);
+    background-size: 44px 24px, 62px 22px;
+    background-position: left 0 bottom -12px, left 22px bottom -10px;
+    background-repeat: repeat-x;
+  }
+}

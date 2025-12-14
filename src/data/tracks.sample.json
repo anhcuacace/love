@@ -1,0 +1,20 @@
+[
+  {
+    "id": "track-1",
+    "title": "Bài hát kỷ niệm #1",
+    "artist": "Thêm tên ca sĩ sau",
+    "src": "/music/track-1.mp3"
+  },
+  {
+    "id": "track-2",
+    "title": "Bài hát kỷ niệm #2",
+    "artist": "Thêm tên ca sĩ sau",
+    "src": "/music/track-2.mp3"
+  },
+  {
+    "id": "track-3",
+    "title": "Bài hát kỷ niệm #3",
+    "artist": "Thêm tên ca sĩ sau",
+    "src": "/music/track-3.mp3"
+  }
+]
